@@ -1,3 +1,4 @@
+/* Main container */
 .breathing-container {
   display: flex;
   flex-direction: column;
@@ -7,6 +8,7 @@
   padding: 16px;
 }
 
+/* Card styling */
 .phase-card,
 .settings-card {
   width: 100%;
@@ -18,39 +20,12 @@
   color: white;
 }
 
-/* Circle timer styling */
-.circle-timer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.settings-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Pulsing animation for active phase */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-  }
-  70% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-  }
-}
-
-.pulse-animation {
-  animation: pulse 2s infinite;
-}
-
-/* Completed phase styling */
-.phase-indicator.completed .phase-circle {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #3f51b5;
+.settings-card mat-card-content {
+  padding: 16px 8px;
 }
 
 /* Controls */
@@ -65,62 +40,23 @@
   height: 64px;
 }
 
-/* Pattern Selection - Updated */
+/* Pattern Selection */
 .pattern-selection {
   margin-bottom: 20px;
-
-  .mat-button-toggle-group {
-    width: 100%;
-    border-radius: 24px;
-    overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-
-    .mat-button-toggle {
-      flex: 1;
-      text-align: center;
-      padding: 8px 0;
-    }
-  }
 }
 
-.speed-control {
-  margin-top: 16px;
+/* Angular Material customization */
+:host ::ng-deep .pattern-selection .mat-button-toggle-group {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+:host ::ng-deep .pattern-selection .mat-button-toggle {
+  flex: 1;
   text-align: center;
-
-  .select-container {
-    display: flex;
-    justify-content: center;
-
-    .speed-select {
-      width: 80%;
-      max-width: 300px;
-
-      ::ng-deep .mat-form-field-wrapper {
-        padding-bottom: 0;
-      }
-
-      ::ng-deep .mat-form-field-flex {
-        border-radius: 8px;
-        background-color: #f5f5f5;
-      }
-    }
-  }
-}
-
-/* Overall card styling */
-.settings-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-  mat-card-content {
-    padding: 16px 8px;
-  }
-}
-
-.pattern-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  padding: 8px 0;
 }
 
 /* Speed Control */
@@ -129,62 +65,28 @@
   text-align: center;
 }
 
-.slider-container {
-  margin-top: 16px;
-}
-
-.speed-slider {
-  width: 100%;
-}
-
-.speed-info {
+.select-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
+  justify-content: center;
 }
 
-.speed-value {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.67);
+.speed-select {
+  width: 80%;
+  max-width: 300px;
 }
 
-.link-style {
-  min-width: auto;
-  padding: 0 8px;
+:host ::ng-deep .speed-select .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+:host ::ng-deep .speed-select .mat-form-field-flex {
+  border-radius: 8px;
+  background-color: #f5f5f5;
 }
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
-  .pattern-buttons button {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    font-size: 0.75em;
-  }
   .phase-card {
     padding: 8px 0;
-  }
-
-  .phases-wrapper {
-    justify-content: "space-between";
-    gap: 0;
-  }
-
-  .phase-indicator {
-    flex: 0;
-    margin: 0;
-    min-width: 60px;
-  }
-
-  .phase-circle {
-    width: 35px;
-    height: 35px;
-  }
-
-  .phase-indicator.active .phase-circle {
-    width: 45px;
-    height: 45px;
   }
 }
