@@ -1,0 +1,34 @@
+@use "@angular/material" as mat;
+
+// Include core Angular Material styles (only include once in your application)
+@include mat.core();
+
+// Define your MD3 theme using the built-in palettes
+$breathing-app-theme: mat.define-theme(
+  (
+    color: (
+      // Use theme-type to specify light or dark mode
+      theme-type: light,
+      // Use one of Angular Material's built-in MD3 palettes
+      primary: mat.$azure-palette,
+    ),
+  )
+);
+
+// Apply the theme
+:root {
+  @include mat.all-component-themes($breathing-app-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

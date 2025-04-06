@@ -1,0 +1,112 @@
+<!-- breathing-app.component.html -->
+<div class="breathing-container">
+  <mat-card class="phase-card">
+    <mat-card-content>
+      <div class="phase-carousel">
+        <div class="phases-wrapper">
+          <div
+            *ngFor="let phase of selectedPattern.phases; let i = index"
+            class="phase-indicator"
+            [class.active]="i === currentPhaseIndex"
+            [class.completed]="i < currentPhaseIndex"
+            [class.upcoming]="i > currentPhaseIndex"
+          >
+            <div
+              class="phase-circle"
+              [class.pulse-animation]="i === currentPhaseIndex && isActive"
+            >
+              <span *ngIf="i !== currentPhaseIndex" class="phase-number"></span>
+              <app-clock-timer
+                *ngIf="i === currentPhaseIndex"
+                [isActive]="isActive"
+                [timeRemaining]="timeElapsed"
+                class="circle-timer"
+              ></app-clock-timer>
+            </div>
+            <div class="phase-info">
+              <div class="phase-name">{{ phase.name }}</div>
+              <div class="phase-duration">{{ phase.currentDuration }}s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timer Controls -->
+      <div class="controls">
+        <button
+          mat-fab
+          color="primary"
+          class="control-button"
+          (click)="isActive ? stopTimer() : startTimer()"
+          aria-label="Start or stop breathing exercise"
+        >
+          <mat-icon>{{ isActive ? "pause" : "play_arrow" }}</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="settings-card">
+    <mat-card-content>
+      <!-- Pattern Selection -->
+      <div class="pattern-selection">
+        <div class="pattern-buttons">
+          <ng-container *ngFor="let pattern of patterns">
+            <ng-container *ngIf="pattern === selectedPattern; else notSelected">
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="selectPattern(pattern)"
+              >
+                {{ pattern.name }}
+              </button>
+            </ng-container>
+            <ng-template #notSelected>
+              <button mat-stroked-button (click)="selectPattern(pattern)">
+                {{ pattern.name }}
+              </button>
+            </ng-template>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Speed Control -->
+      <div class="speed-control">
+        <label for="speedSlider">Adjust timing for all phases</label>
+        <div class="slider-container">
+          <mat-slider
+            [disabled]="isActive"
+            min="-2"
+            max="15"
+            step="1"
+            class="speed-slider"
+          >
+            <input
+              matSliderThumb
+              [value]="phaseAdjustment"
+              (input)="updateSpeed($event)"
+            />
+          </mat-slider>
+          <div class="speed-info">
+            <span class="speed-value"
+              >{{ phaseAdjustment }} second{{
+                phaseAdjustment > 1 || phaseAdjustment < -1 ? "s" : ""
+              }}
+              adjustment</span
+            >
+            <button
+              mat-button
+              *ngIf="phaseAdjustment !== 0"
+              [disabled]="isActive"
+              class="link-style"
+              color="primary"
+              (click)="resetSpeed($event)"
+            >
+              reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

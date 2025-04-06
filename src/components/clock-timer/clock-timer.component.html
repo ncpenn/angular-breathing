@@ -1,0 +1,33 @@
+<div class="meditation-timer mat-elevation-z2">
+  <div class="pulse-container">
+    <div
+      class="pulse"
+      [class.active]="isActive"
+      [style.background]="pulseColor"
+    ></div>
+  </div>
+  <div class="timer-text mat-headline-5">{{ formatTimeRemaining() }}</div>
+  <button
+    *ngIf="!isActive"
+    mat-fab
+    color="primary"
+    class="start-button"
+    aria-label="Start meditation"
+    (click)="toggleActive()"
+  >
+    <mat-icon>play_arrow</mat-icon>
+  </button>
+  <button
+    *ngIf="isActive"
+    mat-fab
+    color="accent"
+    class="pause-button"
+    aria-label="Pause meditation"
+    (click)="toggleActive()"
+  >
+    <mat-icon>pause</mat-icon>
+  </button>
+  <a mat-button color="primary" class="reset-button" (click)="resetTimer()">
+    <mat-icon>refresh</mat-icon> Reset
+  </a>
+</div>
