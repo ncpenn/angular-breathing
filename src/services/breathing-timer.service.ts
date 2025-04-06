@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { BehaviorSubject, Subject } from "rxjs";
 import { BreathingPattern } from "../interfaces/BreathingPattern";
 import { BreathingPhase } from "../interfaces/BreathingPhase";
 
@@ -18,7 +17,6 @@ export class BreathingTimerService {
   private timer: any;
   private totalTimeForPhase: number = 0;
 
-  // Observables that components can subscribe to
   public isActive$ = this._isActive.asObservable();
   public currentPhaseIndex$ = this._currentPhaseIndex.asObservable();
   public timeElapsed$ = this._timeElapsed.asObservable();
@@ -26,21 +24,9 @@ export class BreathingTimerService {
   public selectedPattern$ = this._selectedPattern.asObservable();
   public phaseComplete$ = this._phaseComplete.asObservable();
 
-  // Computed observables
-  get progressPercentage$(): Observable<number> {
-    return this.selectedPattern$.pipe(
-      switchMap(() => this.timeElapsed$),
-      map(() => this.calculateProgressPercentage())
-    );
-  }
-
-  constructor() {}
-
   setPattern(pattern: BreathingPattern): void {
-    // Create a deep copy of the pattern
     const patternCopy = JSON.parse(JSON.stringify(pattern));
 
-    // Apply the current phase adjustment to the new pattern
     const adjustment = this._phaseAdjustment.getValue();
     patternCopy.phases.forEach((phase: BreathingPhase) => {
       phase.currentDuration = Math.max(1, phase.baseDuration + adjustment);
@@ -65,7 +51,6 @@ export class BreathingTimerService {
       phase.currentDuration = Math.max(1, phase.baseDuration + adjustment);
     });
 
-    // Update the selected pattern with the new durations
     this._selectedPattern.next({ ...pattern });
   }
 
@@ -131,19 +116,6 @@ export class BreathingTimerService {
     this.totalTimeForPhase = pattern.phases[nextIndex].currentDuration;
   }
 
-  // Helper methods that components might need
-  private calculateProgressPercentage(): number {
-    const pattern = this._selectedPattern.getValue();
-    if (!pattern) return 0;
-
-    const currentPhaseIndex = this._currentPhaseIndex.getValue();
-    const currentPhase = pattern.phases[currentPhaseIndex];
-    const timeElapsed = this._timeElapsed.getValue();
-
-    return (timeElapsed / currentPhase.currentDuration) * 100;
-  }
-
-  // Getter methods for current values
   get isActive(): boolean {
     return this._isActive.getValue();
   }

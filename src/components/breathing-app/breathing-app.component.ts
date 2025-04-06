@@ -121,12 +121,6 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    this.subscriptions.add(
-      this.timerService.progressPercentage$.subscribe((progress) => {
-        this.progressPercentage = progress;
-      })
-    );
   }
 
   ngOnDestroy() {
