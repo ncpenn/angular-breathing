@@ -6,6 +6,8 @@ import { MatSliderModule } from "@angular/material/slider";
 import { MatIconModule } from "@angular/material/icon";
 import { PhaseCarouselComponent } from "../phase-carousel/phase-carousel.component";
 import { BreathingPattern } from "../../interfaces/BreathingPattern";
+import { BreathingTimerService } from "../../services/breathing-timer.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "breathing-app",
@@ -51,100 +53,93 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
 
   selectedPattern: BreathingPattern = this.patterns[0];
   currentPhaseIndex = 0;
-  timeRemaining = 0;
   timeElapsed = 0;
   isActive = false;
-  private timer: any;
-  totalTimeForPhase: number = this.patterns[0].phases[0].currentDuration;
   phaseAdjustment = 0;
+  progressPercentage = 0;
+
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(private timerService: BreathingTimerService) {}
 
   updateSpeed(event: any) {
-    // In newer Angular Material, the value comes from event.target.value
-    this.phaseAdjustment = parseInt(event.target.value);
-    this.updatePhaseDurations();
-    this.resetTimer();
-  }
-
-  private updatePhaseDurations() {
-    this.patterns.forEach((pattern) => {
-      pattern.phases.forEach((phase) => {
-        phase.currentDuration = Math.max(
-          1,
-          phase.baseDuration + this.phaseAdjustment
-        );
-      });
-    });
+    const adjustment = parseInt(event.target.value);
+    this.timerService.updateSpeed(adjustment);
   }
 
   resetSpeed(event: Event) {
     event.preventDefault();
-    this.phaseAdjustment = 0;
-    this.updatePhaseDurations();
-    this.resetTimer();
+    this.timerService.resetSpeed();
   }
 
   ngOnInit() {
-    this.updatePhaseDurations();
-    this.resetTimer();
+    // Set initial pattern
+    this.timerService.setPattern(this.selectedPattern);
+
+    // Subscribe to service observables
+    this.subscribeToServiceObservables();
+  }
+
+  private subscribeToServiceObservables() {
+    // Subscribe to isActive
+    this.subscriptions.add(
+      this.timerService.isActive$.subscribe((isActive) => {
+        this.isActive = isActive;
+      })
+    );
+
+    // Subscribe to currentPhaseIndex
+    this.subscriptions.add(
+      this.timerService.currentPhaseIndex$.subscribe((index) => {
+        this.currentPhaseIndex = index;
+      })
+    );
+
+    // Subscribe to timeElapsed
+    this.subscriptions.add(
+      this.timerService.timeElapsed$.subscribe((time) => {
+        this.timeElapsed = time;
+      })
+    );
+
+    // Subscribe to phaseAdjustment
+    this.subscriptions.add(
+      this.timerService.phaseAdjustment$.subscribe((adjustment) => {
+        this.phaseAdjustment = adjustment;
+      })
+    );
+
+    // Subscribe to selectedPattern
+    this.subscriptions.add(
+      this.timerService.selectedPattern$.subscribe((pattern) => {
+        if (pattern) {
+          this.selectedPattern = pattern;
+        }
+      })
+    );
+
+    // Subscribe to progressPercentage
+    this.subscriptions.add(
+      this.timerService.progressPercentage$.subscribe((progress) => {
+        this.progressPercentage = progress;
+      })
+    );
   }
 
   ngOnDestroy() {
-    this.stopTimer();
+    // Clean up subscriptions
+    this.subscriptions.unsubscribe();
   }
 
   selectPattern(pattern: BreathingPattern) {
-    this.selectedPattern = pattern;
-    this.resetTimer();
+    this.timerService.setPattern(pattern);
   }
 
   startTimer() {
-    if (!this.isActive) {
-      this.isActive = true;
-      // Start counting from 1
-      this.timeElapsed = 1;
-      this.timer = setInterval(() => {
-        if (this.timeElapsed < this.totalTimeForPhase) {
-          this.timeElapsed += 1;
-        } else {
-          this.nextPhase();
-        }
-      }, 1000);
-    }
+    this.timerService.startTimer();
   }
 
   stopTimer() {
-    this.isActive = false;
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    this.resetTimer();
-  }
-
-  resetTimer() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    this.isActive = false;
-    this.currentPhaseIndex = 0;
-    this.timeRemaining = this.selectedPattern.phases[0].currentDuration;
-    this.totalTimeForPhase = this.timeRemaining;
-    this.timeElapsed = 0;
-  }
-
-  private nextPhase() {
-    this.currentPhaseIndex =
-      (this.currentPhaseIndex + 1) % this.selectedPattern.phases.length;
-    this.timeElapsed = 1;
-    this.totalTimeForPhase =
-      this.selectedPattern.phases[this.currentPhaseIndex].currentDuration;
-  }
-
-  get progressPercentage(): number {
-    const currentPhase = this.selectedPattern.phases[this.currentPhaseIndex];
-    return (
-      ((currentPhase.currentDuration - this.timeRemaining) /
-        currentPhase.currentDuration) *
-      100
-    );
+    this.timerService.stopTimer();
   }
 }

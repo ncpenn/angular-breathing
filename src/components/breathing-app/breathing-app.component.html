@@ -7,7 +7,6 @@
         [isActive]="isActive"
         [timeElapsed]="timeElapsed"
       ></phase-carousel>
-
       <!-- Timer Controls -->
       <div class="controls">
         <button
@@ -22,14 +21,15 @@
       </div>
     </mat-card-content>
   </mat-card>
-
   <mat-card class="settings-card">
     <mat-card-content>
       <!-- Pattern Selection -->
       <div class="pattern-selection">
         <div class="pattern-buttons">
           <ng-container *ngFor="let pattern of patterns">
-            <ng-container *ngIf="pattern === selectedPattern; else notSelected">
+            <ng-container
+              *ngIf="pattern.name === selectedPattern.name; else notSelected"
+            >
               <button
                 mat-flat-button
                 color="primary"
@@ -46,7 +46,6 @@
           </ng-container>
         </div>
       </div>
-
       <div class="speed-control">
         <label for="speedSlider">Adjust timing for all phases</label>
         <div class="slider-container">
