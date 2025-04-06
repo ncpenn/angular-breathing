@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ClockTimerComponent } from '../clock-timer/clock-timer.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
+import { PhaseCarouselComponent } from '../phase-carousel/phase-carousel.component';
 
 interface BreathingPhase {
   name: string;
@@ -22,11 +22,11 @@ interface BreathingPattern {
   standalone: true,
   imports: [
     CommonModule,
-    ClockTimerComponent,
     MatCardModule,
     MatButtonModule,
     MatSliderModule,
     MatIconModule,
+    PhaseCarouselComponent,
   ],
   templateUrl: './breathing-app.component.html',
   styleUrls: ['./breathing-app.component.scss'],

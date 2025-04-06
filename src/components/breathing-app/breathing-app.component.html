@@ -1,35 +1,12 @@
-<!-- breathing-app.component.html -->
 <div class="breathing-container">
   <mat-card class="phase-card">
     <mat-card-content>
-      <div class="phase-carousel">
-        <div class="phases-wrapper">
-          <div
-            *ngFor="let phase of selectedPattern.phases; let i = index"
-            class="phase-indicator"
-            [class.active]="i === currentPhaseIndex"
-            [class.completed]="i < currentPhaseIndex"
-            [class.upcoming]="i > currentPhaseIndex"
-          >
-            <div
-              class="phase-circle"
-              [class.pulse-animation]="i === currentPhaseIndex && isActive"
-            >
-              <span *ngIf="i !== currentPhaseIndex" class="phase-number"></span>
-              <app-clock-timer
-                *ngIf="i === currentPhaseIndex"
-                [isActive]="isActive"
-                [timeRemaining]="timeElapsed"
-                class="circle-timer"
-              ></app-clock-timer>
-            </div>
-            <div class="phase-info">
-              <div class="phase-name">{{ phase.name }}</div>
-              <div class="phase-duration">{{ phase.currentDuration }}s</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <phase-carousel
+        [selectedPattern]="selectedPattern"
+        [currentPhaseIndex]="currentPhaseIndex"
+        [isActive]="isActive"
+        [timeElapsed]="timeElapsed"
+      ></phase-carousel>
 
       <!-- Timer Controls -->
       <div class="controls">
@@ -70,7 +47,6 @@
         </div>
       </div>
 
-      <!-- Speed Control -->
       <div class="speed-control">
         <label for="speedSlider">Adjust timing for all phases</label>
         <div class="slider-container">

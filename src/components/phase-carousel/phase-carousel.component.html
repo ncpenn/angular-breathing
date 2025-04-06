@@ -1,0 +1,28 @@
+<div class="phase-carousel">
+  <div class="phases-wrapper">
+    <div
+      *ngFor="let phase of selectedPattern.phases; let i = index"
+      class="phase-indicator"
+      [class.active]="i === currentPhaseIndex"
+      [class.completed]="i < currentPhaseIndex"
+      [class.upcoming]="i > currentPhaseIndex"
+    >
+      <div
+        class="phase-circle"
+        [class.pulse-animation]="i === currentPhaseIndex && isActive"
+      >
+        <span *ngIf="i !== currentPhaseIndex" class="phase-number"></span>
+        <breath-stages
+          *ngIf="i === currentPhaseIndex"
+          [isActive]="isActive"
+          [timeRemaining]="timeElapsed"
+          class="circle-timer"
+        ></breath-stages>
+      </div>
+      <div class="phase-info">
+        <div class="phase-name">{{ phase.name }}</div>
+        <div class="phase-duration">{{ phase.currentDuration }}s</div>
+      </div>
+    </div>
+  </div>
+</div>

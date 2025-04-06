@@ -1,0 +1,16 @@
+<div class="pulsing-timer-container">
+  <div class="pulse-container">
+    <div
+      class="pulse-ripple"
+      matRipple
+      [matRippleColor]="rippleColor"
+      [matRippleRadius]="rippleRadius"
+      [matRippleCentered]="true"
+      [matRippleUnbounded]="true"
+      [matRippleAnimation]="rippleAnimation"
+    ></div>
+    <div class="pulse-inner" [class.active]="isActive">
+      <div class="timer-text">{{ this.timeRemaining }}</div>
+    </div>
+  </div>
+</div>
