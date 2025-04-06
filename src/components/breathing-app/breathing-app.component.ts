@@ -11,6 +11,7 @@ import { Subscription } from "rxjs";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatOptionModule } from "@angular/material/core";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 @Component({
   selector: "breathing-app",
@@ -25,6 +26,7 @@ import { MatOptionModule } from "@angular/material/core";
     MatSelectModule,
     MatFormFieldModule,
     MatOptionModule,
+    MatButtonToggleModule,
   ],
   templateUrl: "./breathing-app.component.html",
   styleUrls: ["./breathing-app.component.scss"],

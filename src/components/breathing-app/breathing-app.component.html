@@ -22,28 +22,17 @@
   </mat-card>
   <mat-card class="settings-card">
     <mat-card-content>
-      <!-- Pattern Selection -->
       <div class="pattern-selection">
-        <div class="pattern-buttons">
-          <ng-container *ngFor="let pattern of patterns">
-            <ng-container
-              *ngIf="pattern.name === selectedPattern.name; else notSelected"
-            >
-              <button
-                mat-flat-button
-                color="primary"
-                (click)="selectPattern(pattern)"
-              >
-                {{ pattern.name }}
-              </button>
-            </ng-container>
-            <ng-template #notSelected>
-              <button mat-stroked-button (click)="selectPattern(pattern)">
-                {{ pattern.name }}
-              </button>
-            </ng-template>
-          </ng-container>
-        </div>
+        <mat-button-toggle-group aria-label="Pattern selection">
+          <mat-button-toggle
+            *ngFor="let pattern of patterns"
+            [value]="pattern"
+            [checked]="pattern.name === selectedPattern.name"
+            (change)="selectPattern(pattern)"
+          >
+            {{ pattern.name }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
       <div class="speed-control">
         <div class="select-container">
