@@ -7,6 +7,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { PhaseCarouselComponent } from "../phase-carousel/phase-carousel.component";
 import { BreathingPattern } from "../../interfaces/BreathingPattern";
 import { BreathingTimerService } from "../../services/breathing-timer.service";
+import { BreathingPatternsService } from "../../services/breathing-pattern.service";
 import { Subscription } from "rxjs";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -32,38 +33,12 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
   styleUrls: ["./breathing-app.component.scss"],
 })
 export class BreathingAppComponent implements OnInit, OnDestroy {
-  patterns: BreathingPattern[] = [
-    {
-      name: "Box Breathing",
-      phases: [
-        { name: "Inhale", baseDuration: 4, currentDuration: 4 },
-        { name: "Hold", baseDuration: 4, currentDuration: 4 },
-        { name: "Exhale", baseDuration: 4, currentDuration: 4 },
-        { name: "Hold", baseDuration: 4, currentDuration: 4 },
-      ],
-    },
-    {
-      name: "4-7-8 Breathing",
-      phases: [
-        { name: "Inhale", baseDuration: 4, currentDuration: 4 },
-        { name: "Hold", baseDuration: 7, currentDuration: 7 },
-        { name: "Exhale", baseDuration: 8, currentDuration: 8 },
-      ],
-    },
-    {
-      name: "Deep Breathing",
-      phases: [
-        { name: "Inhale", baseDuration: 5, currentDuration: 5 },
-        { name: "Exhale", baseDuration: 5, currentDuration: 5 },
-      ],
-    },
-  ];
-
   phaseAdjustmentOptions: number[] = Array.from(
     { length: 12 },
     (_, i) => i - 2
   );
-  selectedPattern: BreathingPattern = this.patterns[0];
+  patterns: BreathingPattern[] = [];
+  selectedPattern: BreathingPattern = {} as BreathingPattern;
   currentPhaseIndex = 0;
   timeElapsed = 0;
   isActive = false;
@@ -72,7 +47,13 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private timerService: BreathingTimerService) {}
+  constructor(
+    private timerService: BreathingTimerService,
+    patternService: BreathingPatternsService
+  ) {
+    this.patterns = patternService.patterns;
+    this.selectedPattern = this.patterns[0];
+  }
 
   updateSpeed(adjustment: number) {
     this.phaseAdjustment = adjustment;
