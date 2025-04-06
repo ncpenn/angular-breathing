@@ -34,9 +34,10 @@
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
+
       <div class="speed-control">
         <div class="select-container">
-          <mat-form-field appearance="fill" class="speed-select">
+          <mat-form-field appearance="outline" class="speed-select">
             <mat-label>Increase/Decrease timing</mat-label>
             <mat-select
               [disabled]="isActive"
@@ -47,7 +48,7 @@
                 *ngFor="let value of phaseAdjustmentOptions"
                 [value]="value"
               >
-                {{ value }} second{{ value > 1 || value < -1 ? "s" : "" }}
+                {{ value }} second{{ value !== 1 && value !== -1 ? "s" : "" }}
               </mat-option>
             </mat-select>
           </mat-form-field>
