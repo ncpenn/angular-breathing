@@ -1,24 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatIconModule } from '@angular/material/icon';
-import { PhaseCarouselComponent } from '../phase-carousel/phase-carousel.component';
-
-interface BreathingPhase {
-  name: string;
-  baseDuration: number;
-  currentDuration: number;
-}
-
-interface BreathingPattern {
-  name: string;
-  phases: BreathingPhase[];
-}
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { MatCardModule } from "@angular/material/card";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatIconModule } from "@angular/material/icon";
+import { PhaseCarouselComponent } from "../phase-carousel/phase-carousel.component";
+import { BreathingPattern } from "../../interfaces/BreathingPattern";
 
 @Component({
-  selector: 'breathing-app',
+  selector: "breathing-app",
   standalone: true,
   imports: [
     CommonModule,
@@ -28,33 +18,33 @@ interface BreathingPattern {
     MatIconModule,
     PhaseCarouselComponent,
   ],
-  templateUrl: './breathing-app.component.html',
-  styleUrls: ['./breathing-app.component.scss'],
+  templateUrl: "./breathing-app.component.html",
+  styleUrls: ["./breathing-app.component.scss"],
 })
 export class BreathingAppComponent implements OnInit, OnDestroy {
   patterns: BreathingPattern[] = [
     {
-      name: 'Box Breathing',
+      name: "Box Breathing",
       phases: [
-        { name: 'Inhale', baseDuration: 4, currentDuration: 4 },
-        { name: 'Hold', baseDuration: 4, currentDuration: 4 },
-        { name: 'Exhale', baseDuration: 4, currentDuration: 4 },
-        { name: 'Hold', baseDuration: 4, currentDuration: 4 },
+        { name: "Inhale", baseDuration: 4, currentDuration: 4 },
+        { name: "Hold", baseDuration: 4, currentDuration: 4 },
+        { name: "Exhale", baseDuration: 4, currentDuration: 4 },
+        { name: "Hold", baseDuration: 4, currentDuration: 4 },
       ],
     },
     {
-      name: '4-7-8 Breathing',
+      name: "4-7-8 Breathing",
       phases: [
-        { name: 'Inhale', baseDuration: 4, currentDuration: 4 },
-        { name: 'Hold', baseDuration: 7, currentDuration: 7 },
-        { name: 'Exhale', baseDuration: 8, currentDuration: 8 },
+        { name: "Inhale", baseDuration: 4, currentDuration: 4 },
+        { name: "Hold", baseDuration: 7, currentDuration: 7 },
+        { name: "Exhale", baseDuration: 8, currentDuration: 8 },
       ],
     },
     {
-      name: 'Deep Breathing',
+      name: "Deep Breathing",
       phases: [
-        { name: 'Inhale', baseDuration: 5, currentDuration: 5 },
-        { name: 'Exhale', baseDuration: 5, currentDuration: 5 },
+        { name: "Inhale", baseDuration: 5, currentDuration: 5 },
+        { name: "Exhale", baseDuration: 5, currentDuration: 5 },
       ],
     },
   ];
