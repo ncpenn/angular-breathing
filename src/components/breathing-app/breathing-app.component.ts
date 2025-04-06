@@ -8,6 +8,9 @@ import { PhaseCarouselComponent } from "../phase-carousel/phase-carousel.compone
 import { BreathingPattern } from "../../interfaces/BreathingPattern";
 import { BreathingTimerService } from "../../services/breathing-timer.service";
 import { Subscription } from "rxjs";
+import { MatSelectModule } from "@angular/material/select";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatOptionModule } from "@angular/material/core";
 
 @Component({
   selector: "breathing-app",
@@ -19,6 +22,9 @@ import { Subscription } from "rxjs";
     MatSliderModule,
     MatIconModule,
     PhaseCarouselComponent,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatOptionModule,
   ],
   templateUrl: "./breathing-app.component.html",
   styleUrls: ["./breathing-app.component.scss"],
@@ -51,6 +57,10 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
     },
   ];
 
+  phaseAdjustmentOptions: number[] = Array.from(
+    { length: 12 },
+    (_, i) => i - 2
+  );
   selectedPattern: BreathingPattern = this.patterns[0];
   currentPhaseIndex = 0;
   timeElapsed = 0;
@@ -62,9 +72,9 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
 
   constructor(private timerService: BreathingTimerService) {}
 
-  updateSpeed(event: any) {
-    const adjustment = parseInt(event.target.value);
-    this.timerService.updateSpeed(adjustment);
+  updateSpeed(adjustment: number) {
+    this.phaseAdjustment = adjustment;
+    this.timerService.updateSpeed(this.phaseAdjustment);
   }
 
   resetSpeed(event: Event) {
@@ -73,43 +83,35 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Set initial pattern
     this.timerService.setPattern(this.selectedPattern);
-
-    // Subscribe to service observables
     this.subscribeToServiceObservables();
   }
 
   private subscribeToServiceObservables() {
-    // Subscribe to isActive
     this.subscriptions.add(
       this.timerService.isActive$.subscribe((isActive) => {
         this.isActive = isActive;
       })
     );
 
-    // Subscribe to currentPhaseIndex
     this.subscriptions.add(
       this.timerService.currentPhaseIndex$.subscribe((index) => {
         this.currentPhaseIndex = index;
       })
     );
 
-    // Subscribe to timeElapsed
     this.subscriptions.add(
       this.timerService.timeElapsed$.subscribe((time) => {
         this.timeElapsed = time;
       })
     );
 
-    // Subscribe to phaseAdjustment
     this.subscriptions.add(
       this.timerService.phaseAdjustment$.subscribe((adjustment) => {
         this.phaseAdjustment = adjustment;
       })
     );
 
-    // Subscribe to selectedPattern
     this.subscriptions.add(
       this.timerService.selectedPattern$.subscribe((pattern) => {
         if (pattern) {
@@ -118,7 +120,6 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
       })
     );
 
-    // Subscribe to progressPercentage
     this.subscriptions.add(
       this.timerService.progressPercentage$.subscribe((progress) => {
         this.progressPercentage = progress;
@@ -127,7 +128,6 @@ export class BreathingAppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clean up subscriptions
     this.subscriptions.unsubscribe();
   }
 

@@ -7,7 +7,6 @@
         [isActive]="isActive"
         [timeElapsed]="timeElapsed"
       ></phase-carousel>
-      <!-- Timer Controls -->
       <div class="controls">
         <button
           mat-fab
@@ -47,39 +46,22 @@
         </div>
       </div>
       <div class="speed-control">
-        <label for="speedSlider">Adjust timing for all phases</label>
-        <div class="slider-container">
-          <mat-slider
-            [disabled]="isActive"
-            min="-2"
-            max="15"
-            step="1"
-            class="speed-slider"
-          >
-            <input
-              matSliderThumb
-              [value]="phaseAdjustment"
-              (input)="updateSpeed($event)"
-            />
-          </mat-slider>
-          <div class="speed-info">
-            <span class="speed-value"
-              >{{ phaseAdjustment }} second{{
-                phaseAdjustment > 1 || phaseAdjustment < -1 ? "s" : ""
-              }}
-              adjustment</span
-            >
-            <button
-              mat-button
-              *ngIf="phaseAdjustment !== 0"
+        <div class="select-container">
+          <mat-form-field appearance="fill" class="speed-select">
+            <mat-label>Increase/Decrease timing</mat-label>
+            <mat-select
               [disabled]="isActive"
-              class="link-style"
-              color="primary"
-              (click)="resetSpeed($event)"
+              [value]="phaseAdjustment"
+              (selectionChange)="updateSpeed($event.value)"
             >
-              reset
-            </button>
-          </div>
+              <mat-option
+                *ngFor="let value of phaseAdjustmentOptions"
+                [value]="value"
+              >
+                {{ value }} second{{ value > 1 || value < -1 ? "s" : "" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </mat-card-content>
