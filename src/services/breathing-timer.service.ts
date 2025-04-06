@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { BreathingPattern } from "../interfaces/BreathingPattern";
+import { BreathingPhase } from "../interfaces/BreathingPhase";
 
 @Injectable({
   providedIn: "root",
@@ -41,15 +42,9 @@ export class BreathingTimerService {
 
     // Apply the current phase adjustment to the new pattern
     const adjustment = this._phaseAdjustment.getValue();
-    patternCopy.phases.forEach(
-      (phase: {
-        name: string;
-        baseDuration: number;
-        currentDuration: number;
-      }) => {
-        phase.currentDuration = Math.max(1, phase.baseDuration + adjustment);
-      }
-    );
+    patternCopy.phases.forEach((phase: BreathingPhase) => {
+      phase.currentDuration = Math.max(1, phase.baseDuration + adjustment);
+    });
 
     this._selectedPattern.next(patternCopy);
     this.resetTimer();
