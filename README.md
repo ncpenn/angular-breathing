@@ -10,4 +10,4 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Live site
 
-The site is live at: (https://dobreathing.netlify.app/)[https://dobreathing.netlify.app/]
+The site is live at: [https://dobreathing.netlify.app/](https://dobreathing.netlify.app/)
